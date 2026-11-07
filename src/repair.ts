@@ -7,6 +7,13 @@ export interface RepairResult {
   column?: number;
 }
 
+export interface JsonStats {
+  keyCount: number;
+  maxDepth: number;
+  arrayItemCount: number;
+  byteSize: number;
+}
+
 export function repairJsonString(raw: string): string {
   if (!raw || !raw.trim()) return "";
 
@@ -73,4 +80,40 @@ export function parseAndRepairJson(input: string): RepairResult {
       };
     }
   }
+}
+
+// byteSize measures `text`, so pass the output as displayed when it isn't the default pretty-print
+export function getJsonStats(
+  parsed: unknown,
+  text: string = JSON.stringify(parsed, null, 2),
+): JsonStats {
+  let keyCount = 0;
+  let maxDepth = 0;
+  let arrayItemCount = 0;
+
+  // Explicit stack: JSON.parse accepts nesting deeper than recursion could walk
+  const pending: Array<{ value: unknown; depth: number }> = [{ value: parsed, depth: 0 }];
+
+  while (pending.length > 0) {
+    const { value, depth } = pending.pop()!;
+    if (typeof value !== "object" || value === null) continue;
+
+    maxDepth = Math.max(maxDepth, depth + 1);
+    const children = Array.isArray(value) ? value : Object.values(value);
+    if (Array.isArray(value)) {
+      arrayItemCount += children.length;
+    } else {
+      keyCount += children.length;
+    }
+    for (const child of children) {
+      pending.push({ value: child, depth: depth + 1 });
+    }
+  }
+
+  return {
+    keyCount,
+    maxDepth,
+    arrayItemCount,
+    byteSize: new TextEncoder().encode(text).length,
+  };
 }

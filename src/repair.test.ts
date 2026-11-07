@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseAndRepairJson, repairJsonString } from "./repair";
+import { getJsonStats, parseAndRepairJson, repairJsonString } from "./repair";
 
 describe("repairJsonString", () => {
   it("fixes trailing commas in objects and arrays", () => {
@@ -64,5 +64,67 @@ describe("parseAndRepairJson", () => {
     const res = parseAndRepairJson("   ");
     expect(res.valid).toBe(false);
     expect(res.error).toContain("empty");
+  });
+});
+
+describe("getJsonStats", () => {
+  it("counts keys in a flat object", () => {
+    const stats = getJsonStats({ a: 1, b: "two", c: null });
+    expect(stats.keyCount).toBe(3);
+    expect(stats.maxDepth).toBe(1);
+    expect(stats.arrayItemCount).toBe(0);
+  });
+
+  it("counts keys and depth across a nested tree", () => {
+    const stats = getJsonStats({ a: { b: { c: 1 } }, d: { e: 2 } });
+    expect(stats.keyCount).toBe(5);
+    expect(stats.maxDepth).toBe(3);
+  });
+
+  it("counts array items without counting them as keys", () => {
+    const stats = getJsonStats([1, "two", null, true]);
+    expect(stats.arrayItemCount).toBe(4);
+    expect(stats.keyCount).toBe(0);
+    expect(stats.maxDepth).toBe(1);
+  });
+
+  it("walks objects inside arrays and arrays inside objects", () => {
+    const stats = getJsonStats({ rows: [{ id: 1 }, { id: 2, tags: ["x", "y"] }] });
+    expect(stats.keyCount).toBe(4);
+    expect(stats.arrayItemCount).toBe(4);
+    expect(stats.maxDepth).toBe(4);
+  });
+
+  it("treats empty containers as one level with nothing inside", () => {
+    expect(getJsonStats({})).toMatchObject({ keyCount: 0, arrayItemCount: 0, maxDepth: 1 });
+    expect(getJsonStats([])).toMatchObject({ keyCount: 0, arrayItemCount: 0, maxDepth: 1 });
+  });
+
+  it("reports zero depth for top-level scalars", () => {
+    expect(getJsonStats(42)).toMatchObject({ keyCount: 0, arrayItemCount: 0, maxDepth: 0 });
+    expect(getJsonStats(null)).toMatchObject({ keyCount: 0, arrayItemCount: 0, maxDepth: 0 });
+  });
+
+  it("measures byte size of the pretty-printed output by default", () => {
+    const parsed = { a: 1 };
+    expect(getJsonStats(parsed).byteSize).toBe(JSON.stringify(parsed, null, 2).length);
+  });
+
+  it("measures byte size in UTF-8, not string length", () => {
+    expect(getJsonStats("é").byteSize).toBe(4);
+    expect(getJsonStats("😀").byteSize).toBe(6);
+  });
+
+  it("measures the given text when the output was reformatted", () => {
+    const parsed = { a: 1, b: 2 };
+    expect(getJsonStats(parsed, JSON.stringify(parsed)).byteSize).toBe(13);
+  });
+
+  it("handles nesting deeper than the call stack allows", () => {
+    let deep: unknown = 0;
+    for (let i = 0; i < 200_000; i++) deep = [deep];
+    const stats = getJsonStats(deep, "[]");
+    expect(stats.maxDepth).toBe(200_000);
+    expect(stats.arrayItemCount).toBe(200_000);
   });
 });
