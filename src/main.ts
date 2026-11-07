@@ -1,5 +1,10 @@
 import "./style.css";
 import { describeResult, getJsonStats, parseAndRepairJson } from "./repair";
+import { initThemeController } from "./theme";
+import { initModals } from "./modals";
+import { initCookieModal } from "./cookies";
+import { initVaultDrawer } from "./vault";
+import "./toast";
 
 const inputArea = document.getElementById("input-json") as HTMLTextAreaElement | null;
 const outputArea = document.getElementById("output-json") as HTMLTextAreaElement | null;
@@ -59,10 +64,15 @@ function processJson(): string {
     outputArea.value = result.repairedText;
     statusBadge.textContent = "✓ Valid / Repaired";
     statusBadge.className = "status-badge status-valid";
-    showStats(JSON.parse(result.repairedText), result.repairedText);
+    try {
+      const parsed = JSON.parse(result.repairedText);
+      showStats(parsed, result.repairedText);
+    } catch {
+      clearStats();
+    }
   } else {
-    outputArea.value = `Error: ${result.error || "Unable to repair JSON"}`;
-    statusBadge.textContent = "✗ Invalid Syntax";
+    outputArea.value = `Error: ${result.error ?? "Invalid JSON"}`;
+    statusBadge.textContent = "✗ Invalid JSON";
     statusBadge.className = "status-badge status-invalid";
     clearStats();
   }
@@ -70,43 +80,54 @@ function processJson(): string {
 }
 
 if (inputArea) {
-  inputArea.addEventListener("input", () => announce(processJson()));
+  inputArea.addEventListener("input", () => {
+    const description = processJson();
+    announce(description);
+  });
 }
 
 if (btnRepair) {
-  btnRepair.addEventListener("click", () => announce(processJson()));
+  btnRepair.addEventListener("click", () => {
+    const description = processJson();
+    announce(description);
+  });
 }
 
-if (btnClear && inputArea) {
+if (btnClear && inputArea && outputArea) {
   btnClear.addEventListener("click", () => {
     inputArea.value = "";
-    announce(processJson());
+    outputArea.value = "";
+    processJson();
+    announce("Input and output cleared.");
     inputArea.focus();
   });
 }
 
-if (btnMinify && outputArea && statusBadge) {
+if (btnMinify && outputArea && inputArea) {
   btnMinify.addEventListener("click", () => {
-    try {
-      const parsed = JSON.parse(outputArea.value);
-      outputArea.value = JSON.stringify(parsed);
-      showStats(parsed, outputArea.value);
-      announce("JSON minified.");
-    } catch {
-      // Ignore if currently displaying error
+    const result = parseAndRepairJson(inputArea.value);
+    if (result.valid) {
+      try {
+        const parsed = JSON.parse(result.repairedText);
+        outputArea.value = JSON.stringify(parsed);
+        announce("Output minified.");
+      } catch {
+        // ignore
+      }
     }
   });
 }
 
 if (btnDownload && outputArea) {
   btnDownload.addEventListener("click", () => {
+    if (!outputArea.value) return;
     const blob = new Blob([outputArea.value], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
     link.download = "repaired.json";
     link.click();
-    // Some browsers start the download asynchronously, after click() returns
+    announce("Repaired JSON downloaded.");
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
 }
@@ -144,3 +165,9 @@ if (inputArea && !inputArea.value) {
 };`;
   processJson();
 }
+
+// Initialize Sovereign Fleet UI
+initThemeController();
+initModals();
+initCookieModal();
+initVaultDrawer();
