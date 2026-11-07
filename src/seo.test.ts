@@ -246,3 +246,28 @@ describe("accessibility styles", () => {
     expect(styleCss).not.toContain("outline: none");
   });
 });
+
+describe("google ecosystem hygiene", () => {
+  it("includes Googlebot snippet and image preview directives", () => {
+    expect(indexHtml).toMatch(/<meta\s+name="robots"\s+content="[^"]*max-image-preview:large[^"]*"/);
+    expect(indexHtml).toMatch(/<meta\s+name="robots"\s+content="[^"]*max-snippet:-1[^"]*"/);
+  });
+
+  it("includes theme-color for mobile search UX", () => {
+    expect(indexHtml).toMatch(/<meta\s+name="theme-color"\s+content="#[0-9a-fA-F]{6}"/);
+  });
+
+  it("provides complete WebApplication metadata for rich snippets", () => {
+    const webApp = jsonLdBlocks().find((b) => b["@type"] === "WebApplication") as Record<string, unknown>;
+    expect(webApp).toBeDefined();
+    expect(webApp.operatingSystem).toBe("All");
+    expect(webApp.browserRequirements).toContain("JavaScript");
+    expect(webApp.offers).toEqual(expect.objectContaining({ price: "0" }));
+  });
+
+  it("defines standard 1200x630 OpenGraph card with alt text", () => {
+    expect(indexHtml).toContain('<meta property="og:image:width" content="1200" />');
+    expect(indexHtml).toContain('<meta property="og:image:height" content="630" />');
+    expect(indexHtml).toContain('property="og:image:alt"');
+  });
+});
