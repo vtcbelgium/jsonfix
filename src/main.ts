@@ -1,5 +1,5 @@
 import "./style.css";
-import { getJsonStats, parseAndRepairJson } from "./repair";
+import { describeResult, getJsonStats, parseAndRepairJson } from "./repair";
 
 const inputArea = document.getElementById("input-json") as HTMLTextAreaElement | null;
 const outputArea = document.getElementById("output-json") as HTMLTextAreaElement | null;
@@ -10,6 +10,17 @@ const btnCopy = document.getElementById("btn-copy");
 const btnMinify = document.getElementById("btn-minify");
 const btnDownload = document.getElementById("btn-download") as HTMLButtonElement | null;
 const jsonStats = document.getElementById("json-stats");
+const liveStatus = document.getElementById("live-status");
+
+let announceTimer: ReturnType<typeof setTimeout> | undefined;
+
+// Delayed so a screen reader isn't interrupted on every keystroke while typing
+function announce(message: string): void {
+  clearTimeout(announceTimer);
+  announceTimer = setTimeout(() => {
+    if (liveStatus) liveStatus.textContent = message;
+  }, 400);
+}
 
 function showStats(parsed: unknown, text: string): void {
   if (jsonStats) {
@@ -29,19 +40,21 @@ function clearStats(): void {
   if (btnDownload) btnDownload.disabled = true;
 }
 
-function processJson(): void {
-  if (!inputArea || !outputArea || !statusBadge) return;
+function processJson(): string {
+  if (!inputArea || !outputArea || !statusBadge) return "";
   const raw = inputArea.value;
 
   if (!raw.trim()) {
     outputArea.value = "";
     statusBadge.textContent = "Empty";
     statusBadge.className = "status-badge";
+    inputArea.removeAttribute("aria-invalid");
     clearStats();
-    return;
+    return "Input is empty.";
   }
 
   const result = parseAndRepairJson(raw);
+  inputArea.setAttribute("aria-invalid", String(!result.valid));
   if (result.valid) {
     outputArea.value = result.repairedText;
     statusBadge.textContent = "✓ Valid / Repaired";
@@ -53,20 +66,21 @@ function processJson(): void {
     statusBadge.className = "status-badge status-invalid";
     clearStats();
   }
+  return describeResult(result);
 }
 
 if (inputArea) {
-  inputArea.addEventListener("input", processJson);
+  inputArea.addEventListener("input", () => announce(processJson()));
 }
 
 if (btnRepair) {
-  btnRepair.addEventListener("click", processJson);
+  btnRepair.addEventListener("click", () => announce(processJson()));
 }
 
 if (btnClear && inputArea) {
   btnClear.addEventListener("click", () => {
     inputArea.value = "";
-    processJson();
+    announce(processJson());
     inputArea.focus();
   });
 }
@@ -77,6 +91,7 @@ if (btnMinify && outputArea && statusBadge) {
       const parsed = JSON.parse(outputArea.value);
       outputArea.value = JSON.stringify(parsed);
       showStats(parsed, outputArea.value);
+      announce("JSON minified.");
     } catch {
       // Ignore if currently displaying error
     }
@@ -103,11 +118,14 @@ if (btnCopy && outputArea) {
       await navigator.clipboard.writeText(outputArea.value);
       const prev = btnCopy.textContent;
       btnCopy.textContent = "Copied!";
+      announce("Output copied to clipboard.");
       setTimeout(() => {
         btnCopy.textContent = prev;
+        // Empty the region so copying again is announced again
+        if (liveStatus) liveStatus.textContent = "";
       }, 1500);
     } catch {
-      // Fallback
+      announce("Could not copy the output.");
     }
   });
 }

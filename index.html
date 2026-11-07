@@ -8,11 +8,19 @@
       name="description"
       content="Fix malformed JSON instantly in your browser. Repairs trailing commas, single quotes, unquoted keys, and Python literals with 100% client-side privacy."
     />
+    <meta
+      name="keywords"
+      content="json repair, fix json, json formatter, json validator, json minifier, trailing comma, unquoted keys, python json"
+    />
     <link rel="canonical" href="https://jsonfix.othrys.be/" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://jsonfix.othrys.be/" />
+    <meta property="og:image" content="https://jsonfix.othrys.be/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="JSONFix: private, in-browser JSON repair and formatter" />
     <meta property="og:title" content="JSONFix — Free Online JSON Repair &amp; Formatter" />
     <meta
       property="og:description"
@@ -21,6 +29,7 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://jsonfix.othrys.be/og-image.png" />
     <meta name="twitter:title" content="JSONFix — Free Online JSON Repair &amp; Formatter" />
     <meta
       name="twitter:description"
@@ -44,6 +53,48 @@
         }
       }
     </script>
+
+    <!-- JSON-LD FAQPage: keep identical to the visible FAQ section -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Why did my JSON fail to parse?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "JSON is stricter than JavaScript or Python. A parser rejects the whole document at the first rule it breaks, such as a comma after the last item, a property name without double quotes, a string in single quotes, or a literal like True instead of true. A missing bracket or an unterminated string stops it too."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does JSONFix repair broken JSON?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "JSONFix first tries to parse your input as it is. If that fails, it applies a series of targeted text fixes, parses the result again, and shows the repaired JSON neatly formatted. If the input still cannot be parsed, it shows the parser error instead of guessing at your data."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does my data get sent to a remote server?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. JSONFix is 100% private: repair, formatting and validation all run in your browser with client-side code. Your JSON is never uploaded, and the site uses no cookies or analytics."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What syntax errors are automatically repaired?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "JSONFix repairs trailing commas in objects and arrays, unquoted keys, single quotes around strings and keys, Python literals (True, False and None), and a trailing semicolon at the end of the input."
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <header class="navbar">
@@ -65,7 +116,7 @@
       <section class="grid-workspace" aria-label="JSON Workspace">
         <div class="pane">
           <div class="pane-header">
-            <span class="pane-title">Input (Broken JSON)</span>
+            <label for="input-json" class="pane-title">Input (Broken JSON)</label>
             <div class="pane-actions">
               <button id="btn-clear" class="btn" type="button">Clear</button>
             </div>
@@ -80,7 +131,7 @@
 
         <div class="pane">
           <div class="pane-header">
-            <span class="pane-title">Repaired &amp; Validated</span>
+            <label for="output-json" class="pane-title">Repaired &amp; Validated</label>
             <div class="pane-actions">
               <span id="status-badge" class="status-badge">Ready</span>
               <button id="btn-minify" class="btn" type="button">Minify</button>
@@ -97,6 +148,41 @@
           ></textarea>
           <p id="json-stats" class="json-stats">No valid JSON to measure yet.</p>
         </div>
+        <div id="live-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+      </section>
+
+      <section class="faq" aria-labelledby="faq-heading">
+        <h2 id="faq-heading">Frequently asked questions</h2>
+
+        <h3>Why did my JSON fail to parse?</h3>
+        <p>
+          JSON is stricter than JavaScript or Python. A parser rejects the whole document at the
+          first rule it breaks, such as a comma after the last item, a property name without double
+          quotes, a string in single quotes, or a literal like <code>True</code> instead of
+          <code>true</code>. A missing bracket or an unterminated string stops it too.
+        </p>
+
+        <h3>How does JSONFix repair broken JSON?</h3>
+        <p>
+          JSONFix first tries to parse your input as it is. If that fails, it applies a series of
+          targeted text fixes, parses the result again, and shows the repaired JSON neatly
+          formatted. If the input still cannot be parsed, it shows the parser error instead of
+          guessing at your data.
+        </p>
+
+        <h3>Does my data get sent to a remote server?</h3>
+        <p>
+          No. JSONFix is <strong>100% private</strong>: repair, formatting and validation all run in
+          your browser with client-side code. Your JSON is never uploaded, and the site uses no
+          cookies or analytics.
+        </p>
+
+        <h3>What syntax errors are automatically repaired?</h3>
+        <p>
+          JSONFix repairs trailing commas in objects and arrays, unquoted keys, single quotes around
+          strings and keys, Python literals (<code>True</code>, <code>False</code> and
+          <code>None</code>), and a trailing semicolon at the end of the input.
+        </p>
       </section>
     </main>
 
