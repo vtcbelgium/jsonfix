@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSONFix — Free Online JSON Repair &amp; Formatter</title>
+    <meta
+      name="description"
+      content="Fix malformed JSON instantly in your browser. Repairs trailing commas, single quotes, unquoted keys, and Python literals with 100% client-side privacy."
+    />
+    <link rel="canonical" href="https://jsonfix.othrys.be/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jsonfix.othrys.be/" />
+    <meta property="og:title" content="JSONFix — Free Online JSON Repair &amp; Formatter" />
+    <meta
+      property="og:description"
+      content="Fix malformed JSON instantly in your browser. Zero server uploads, zero cookies, 100% private."
+    />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JSONFix — Free Online JSON Repair &amp; Formatter" />
+    <meta
+      name="twitter:description"
+      content="Fix malformed JSON instantly in your browser. Zero server uploads, zero cookies, 100% private."
+    />
+
+    <!-- JSON-LD WebApplication -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "JSONFix",
+        "url": "https://jsonfix.othrys.be/",
+        "description": "Fast, private client-side JSON repair tool and formatter.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="/" class="brand">
+          <span>JSONFix</span>
+          <span class="brand-badge">OTHRYS</span>
+        </a>
+        <span class="privacy-badge">🔒 100% Client-Side · No Server Uploads</span>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <h1>JSON Repair &amp; Formatter</h1>
+        <p>Fix trailing commas, single quotes, unquoted keys, and invalid literals instantly.</p>
+      </section>
+
+      <section class="grid-workspace" aria-label="JSON Workspace">
+        <div class="pane">
+          <div class="pane-header">
+            <span class="pane-title">Input (Broken JSON)</span>
+            <div class="pane-actions">
+              <button id="btn-clear" class="btn" type="button">Clear</button>
+            </div>
+          </div>
+          <textarea
+            id="input-json"
+            class="editor"
+            placeholder="Paste your malformed JSON here…"
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <div class="pane">
+          <div class="pane-header">
+            <span class="pane-title">Repaired &amp; Validated</span>
+            <div class="pane-actions">
+              <span id="status-badge" class="status-badge">Ready</span>
+              <button id="btn-minify" class="btn" type="button">Minify</button>
+              <button id="btn-copy" class="btn btn-primary" type="button">Copy</button>
+            </div>
+          </div>
+          <textarea
+            id="output-json"
+            class="editor"
+            readonly
+            placeholder="Repaired JSON will appear here…"
+            spellcheck="false"
+          ></textarea>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        Part of the <a href="https://othrys.be">OTHRYS</a> Sovereign Fleet of Lightweight Web Tools.
+      </p>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

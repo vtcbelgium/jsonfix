@@ -1,0 +1,24 @@
+{
+  "$schema": "https://othrys.be/schemas/blueprint.v1.json",
+  "blueprint_id": "blueprint.jsonfix.v1",
+  "schema_version": "1.0.0",
+  "oros_id": "jsonfix",
+  "name": "JSONFix",
+  "title": "Free Online JSON Repair, Formatter & Validator",
+  "domain": "jsonfix.othrys.be",
+  "thesis": "Fast, 100% client-side JSON repair, formatter and validator with zero server uploads and zero tracking.",
+  "single_job": "Repair common malformed JSON syntax defects and format or minify output instantly in browser.",
+  "runtime": {
+    "type": "spa-edge",
+    "stack": "vanilla-typescript-vite",
+    "hosting": "github-pages",
+    "cname": "jsonfix.othrys.be"
+  },
+  "constraints": {
+    "zero_cloud_upload": true,
+    "zero_cookies": true,
+    "zero_analytics_trackers": true,
+    "zero_third_party_fonts": true,
+    "offline_first": true
+  }
+}
