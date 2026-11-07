@@ -82,6 +82,11 @@ export function parseAndRepairJson(input: string): RepairResult {
   }
 }
 
+export function describeResult(result: RepairResult): string {
+  if (result.valid) return "JSON is valid or repaired. The output is ready.";
+  return `Could not repair JSON: ${result.error || "Unable to repair JSON"}`;
+}
+
 // byteSize measures `text`, so pass the output as displayed when it isn't the default pretty-print
 export function getJsonStats(
   parsed: unknown,

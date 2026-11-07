@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getJsonStats, parseAndRepairJson, repairJsonString } from "./repair";
+import { describeResult, getJsonStats, parseAndRepairJson, repairJsonString } from "./repair";
 
 describe("repairJsonString", () => {
   it("fixes trailing commas in objects and arrays", () => {
@@ -64,6 +64,19 @@ describe("parseAndRepairJson", () => {
     const res = parseAndRepairJson("   ");
     expect(res.valid).toBe(false);
     expect(res.error).toContain("empty");
+  });
+});
+
+describe("describeResult", () => {
+  it("announces a successful repair", () => {
+    expect(describeResult(parseAndRepairJson("{a: 1,}"))).toBe(
+      "JSON is valid or repaired. The output is ready.",
+    );
+  });
+
+  it("announces the parser error when repair fails", () => {
+    const result = parseAndRepairJson("{a: ");
+    expect(describeResult(result)).toBe(`Could not repair JSON: ${result.error}`);
   });
 });
 
