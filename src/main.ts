@@ -1,5 +1,5 @@
 import "./style.css";
-import { parseAndRepairJson } from "./repair";
+import { getJsonStats, parseAndRepairJson } from "./repair";
 
 const inputArea = document.getElementById("input-json") as HTMLTextAreaElement | null;
 const outputArea = document.getElementById("output-json") as HTMLTextAreaElement | null;
@@ -8,6 +8,26 @@ const btnRepair = document.getElementById("btn-repair");
 const btnClear = document.getElementById("btn-clear");
 const btnCopy = document.getElementById("btn-copy");
 const btnMinify = document.getElementById("btn-minify");
+const btnDownload = document.getElementById("btn-download") as HTMLButtonElement | null;
+const jsonStats = document.getElementById("json-stats");
+
+function showStats(parsed: unknown, text: string): void {
+  if (jsonStats) {
+    const { keyCount, maxDepth, arrayItemCount, byteSize } = getJsonStats(parsed, text);
+    jsonStats.textContent = [
+      `Keys: ${keyCount.toLocaleString()}`,
+      `Max depth: ${maxDepth.toLocaleString()}`,
+      `Array items: ${arrayItemCount.toLocaleString()}`,
+      `Bytes: ${byteSize.toLocaleString()}`,
+    ].join(" · ");
+  }
+  if (btnDownload) btnDownload.disabled = false;
+}
+
+function clearStats(): void {
+  if (jsonStats) jsonStats.textContent = "No valid JSON to measure yet.";
+  if (btnDownload) btnDownload.disabled = true;
+}
 
 function processJson(): void {
   if (!inputArea || !outputArea || !statusBadge) return;
@@ -17,6 +37,7 @@ function processJson(): void {
     outputArea.value = "";
     statusBadge.textContent = "Empty";
     statusBadge.className = "status-badge";
+    clearStats();
     return;
   }
 
@@ -25,10 +46,12 @@ function processJson(): void {
     outputArea.value = result.repairedText;
     statusBadge.textContent = "✓ Valid / Repaired";
     statusBadge.className = "status-badge status-valid";
+    showStats(JSON.parse(result.repairedText), result.repairedText);
   } else {
     outputArea.value = `Error: ${result.error || "Unable to repair JSON"}`;
     statusBadge.textContent = "✗ Invalid Syntax";
     statusBadge.className = "status-badge status-invalid";
+    clearStats();
   }
 }
 
@@ -53,9 +76,23 @@ if (btnMinify && outputArea && statusBadge) {
     try {
       const parsed = JSON.parse(outputArea.value);
       outputArea.value = JSON.stringify(parsed);
+      showStats(parsed, outputArea.value);
     } catch {
       // Ignore if currently displaying error
     }
+  });
+}
+
+if (btnDownload && outputArea) {
+  btnDownload.addEventListener("click", () => {
+    const blob = new Blob([outputArea.value], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "repaired.json";
+    link.click();
+    // Some browsers start the download asynchronously, after click() returns
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
 }
 

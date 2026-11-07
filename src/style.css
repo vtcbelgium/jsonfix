@@ -120,8 +120,10 @@ main.container {
 
 .pane-header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .pane-title {
@@ -154,8 +156,15 @@ textarea.editor:focus {
 
 .pane-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
+}
+
+.json-stats {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
 }
 
 button.btn {
@@ -171,6 +180,12 @@ button.btn {
 
 button.btn:hover {
   border-color: var(--text-muted);
+}
+
+button.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--border);
 }
 
 button.btn-primary {
