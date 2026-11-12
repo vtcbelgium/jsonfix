@@ -104,7 +104,7 @@
             "name": "Does my data get sent to a remote server?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. JSONFix is 100% private: repair, formatting and validation all run in your browser with client-side code. Your JSON is never uploaded, and the site uses no cookies or analytics."
+              "text": "No. JSONFix is 100% private: repair, formatting and validation all run in your browser with client-side code. Your JSON is never uploaded, and the site sets no cookies and only counts anonymous page views (no IP address or personal data stored)."
             }
           },
           {
@@ -133,7 +133,7 @@
               </svg>
             </span>
             <span class="brand-main">JSON<strong>Fix</strong></span>
-            <span class="sovereign-status-badge" title="No registration, tracking, or cloud backend required">Sovereign</span>
+            <span class="sovereign-status-badge" title="No registration or cloud backend required">Sovereign</span>
           </div>
           <small class="brand-signature">powered by OTHRYS</small>
         </a>
@@ -214,8 +214,7 @@
         <h3>Does my data get sent to a remote server?</h3>
         <p>
           No. JSONFix is <strong>100% private</strong>: repair, formatting and validation all run
-          in your browser with client-side code. Your JSON is never uploaded, and the site uses no
-          cookies or analytics.
+          in your browser with client-side code. Your JSON is never uploaded, and the site sets no cookies and only counts anonymous page views (no IP address or personal data stored).
         </p>
 
         <h3>What syntax errors are automatically repaired?</h3>
@@ -287,7 +286,7 @@
 
       <div class="footer-bottom">
         <span>© 2026 OTHRYS. Built to be useful, private, and durable.</span>
-        <span class="sovereign-tag">100% Client-Side · Zero Cookies · Zero Cloud Tracking</span>
+        <span class="sovereign-tag">100% Client-Side · Zero Cookies · Anonymous Page Counts Only</span>
       </div>
     </footer>
 
@@ -300,7 +299,7 @@
       <div class="dialog-body">
         <p>JSONFix is an independent sovereign utility engineered by OTHRYS. It runs 100% in your browser sandbox with zero cloud reliance.</p>
         <p>
-          <strong>Mission:</strong> To provide durable, private, and permanent web utilities without subscriptions, advertising, tracking, or cloud surveillance.
+          <strong>Mission:</strong> To provide durable, private, and permanent web utilities without subscriptions, advertising, user profiling, or cloud surveillance.
         </p>
         <p>
           <strong>Architecture:</strong> Client-side parsing, syntactic normalization and error diagnosis. Zero server roundtrips.
@@ -380,10 +379,10 @@
       <div class="dialog-body">
         <div id="cookie-audit-result"></div>
         <p style="margin-top: 14px;">
-          JSONFix does not use cookies, trackers, or remote telemetry. No cookie banner is required because zero non-essential data is stored.
+          JSONFix sets no cookies and uses no third-party trackers. It sends one anonymous page-view ping (page path, country and a daily-rotating hash; no IP address, no cookie, no stored identifier) to stats.othrys.be. Your JSON never leaves your browser. The ping is skipped if your browser sends Do Not Track or Global Privacy Control.
         </p>
         <p>
-          <strong>Legal Basis:</strong> Under EU ePrivacy Directive 2002/58/EC and GDPR Article 5(3), consent banners are only required when placing tracking cookies. Because JSONFix sets 0 tracking cookies, you are completely free from cookie banners.
+          <strong>Data kept:</strong> counts per page, country and referrer host, deleted after 90 days.
         </p>
       </div>
       <div class="dialog-actions">
@@ -414,5 +413,6 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+  <script src="/stats.js" defer></script>
 </body>
 </html>
