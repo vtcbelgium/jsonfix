@@ -5,11 +5,11 @@
 [![Cookies](https://img.shields.io/badge/Cookies-0-blue?style=flat-square)](https://jsonfix.othrys.be)
 [![WCAG AA](https://img.shields.io/badge/Accessibility-WCAG_AA-blueviolet?style=flat-square)](https://jsonfix.othrys.be)
 
-> Fast, private, client-side client-side malformed JSON fixer and CSV exporter. Runs 100% in your browser with zero server uploads, zero cookies, and zero tracking.
+> Fast, private, client-side client-side malformed JSON fixer and CSV exporter. Runs 100% in your browser with zero server uploads, zero cookies, and no third-party trackers (anonymous cookieless page counts only).
 
 ## Features
 - **100% Client-Side:** Files and confidential data never leave your device.
-- **Zero Cookies & Zero Trackers:** Closed-valve privacy architecture with 0 third-party telemetry scripts.
+- **Zero Cookies & Zero Trackers:** Closed-valve privacy architecture: 0 third-party scripts; first-party anonymous page counts via stats.othrys.be.
 - **Keyboard Spotlight:** Jump to any of the 20 sovereign tools anytime by pressing <kbd>⌘K</kbd> or <kbd>Ctrl+K</kbd>.
 - **PWA Ready:** Works offline on laptops, MacBooks, tablets, and mobile devices.
 
@@ -30,7 +30,7 @@ Use the live tool instantly without installing anything:
 - Converts Python literals (`True`, `False`, `None`) to `true`, `false`, `null`.
 - Strips trailing semicolons.
 - Formats (pretty-print) and minifies output.
-- 100% Client-side: zero server roundtrips, zero telemetry.
+- 100% Client-side: zero server roundtrips for your data; anonymous page-view ping only.
 
 ## Development
 
