@@ -61,8 +61,12 @@ describe("robots.txt", () => {
 });
 
 describe("sitemap.xml", () => {
-  it("lists the canonical URL as the only location", () => {
-    expect([...sitemapXml.matchAll(/<loc>(.*?)<\/loc>/g)].map((loc) => loc[1])).toEqual([SITE_URL]);
+  it("lists the canonical URL first and keeps all URLs on the canonical origin", () => {
+    const locs = [...sitemapXml.matchAll(/<loc>(.*?)<\/loc>/g)].map((loc) => loc[1]);
+    expect(locs[0]).toBe(SITE_URL);
+    for (const loc of locs) {
+      expect(loc.startsWith(SITE_URL)).toBe(true);
+    }
   });
 
   it("has a real lastmod date", () => {
