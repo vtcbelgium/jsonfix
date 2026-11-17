@@ -28,7 +28,7 @@
     <meta property="og:title" content="JSONFix — Free Online JSON Repair &amp; Formatter" />
     <meta
       property="og:description"
-      content="Fix malformed JSON instantly in your browser. Zero server uploads, zero cookies, 100% private."
+      content="Fix malformed JSON instantly in your browser. Zero server uploads, zero cookies, privacy-focused."
     />
 
     <!-- Twitter -->
@@ -37,7 +37,7 @@
     <meta name="twitter:title" content="JSONFix — Free Online JSON Repair &amp; Formatter" />
     <meta
       name="twitter:description"
-      content="Fix malformed JSON instantly in your browser. Zero server uploads, zero cookies, 100% private."
+      content="Fix malformed JSON instantly in your browser. Zero server uploads, zero cookies, privacy-focused."
     />
 
     <!-- Instant Non-Flashing Theme Boot -->
@@ -104,7 +104,7 @@
             "name": "Does my data get sent to a remote server?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. JSONFix is 100% private: repair, formatting and validation all run in your browser with client-side code. Your JSON is never uploaded, and the site sets no cookies and only counts anonymous page views (no IP address or personal data stored)."
+              "text": "No. JSONFix is privacy-focused: repair, formatting and validation all run in your browser with client-side code. Your JSON is never uploaded, and the site sets no cookies and only counts pseudonymous page views (no raw IP or user-agent stored in the visits database)."
             }
           },
           {
@@ -214,8 +214,8 @@
 
         <h3>Does my data get sent to a remote server?</h3>
         <p>
-          No. JSONFix is <strong>100% private</strong>: repair, formatting and validation all run
-          in your browser with client-side code. Your JSON is never uploaded, and the site sets no cookies and only counts anonymous page views (no IP address or personal data stored).
+          No. JSONFix is <strong>privacy-focused</strong>: repair, formatting and validation all run
+          in your browser with client-side code. Your JSON is never uploaded, and the site sets no cookies and only counts pseudonymous page views (no raw IP or user-agent stored in the visits database).
         </p>
 
         <h3>What syntax errors are automatically repaired?</h3>
@@ -288,7 +288,7 @@
 
       <div class="footer-bottom">
         <span>© 2026 OTHRYS. Built to be useful, private, and durable.</span>
-        <span class="sovereign-tag">100% Client-Side · Zero Cookies · Anonymous Page Counts Only</span>
+        <span class="sovereign-tag">100% Client-Side · Zero Cookies · Pseudonymous Page Counts Only</span>
       </div>
     </footer>
 
@@ -375,16 +375,16 @@
     <!-- DIALOG: COOKIE & PRIVACY AUDIT -->
     <dialog id="cookie-dialog" aria-labelledby="cookie-dialog-title">
       <div class="dialog-header">
-        <h3 id="cookie-dialog-title">Zero-Cookie &amp; Zero-Storage Guarantee</h3>
+        <h3 id="cookie-dialog-title">Cookie and Storage Transparency</h3>
         <button type="button" id="cookie-close" class="dialog-close" aria-label="Close dialog">✕</button>
       </div>
       <div class="dialog-body">
         <div id="cookie-audit-result"></div>
         <p style="margin-top: 14px;">
-          JSONFix sets no cookies and uses no third-party trackers. It sends one anonymous page-view ping (page path, country and a daily-rotating hash; no IP address, no cookie, no stored identifier) to stats.othrys.be. Your JSON never leaves your browser. The ping is skipped if your browser sends Do Not Track or Global Privacy Control.
+          JSONFix sets no cookies and uses no third-party trackers. It sends one pseudonymous page-view ping (page path, country and a daily-rotating hash; no raw IP or user-agent stored in the visits database; a daily pseudonymous visitor hash is stored) to stats.othrys.be. Your JSON never leaves your browser. The ping is skipped if your browser sends Do Not Track or Global Privacy Control.
         </p>
         <p>
-          <strong>Data kept:</strong> counts per page, country and referrer host, deleted after 90 days.
+          <strong>Data kept:</strong> counts per page, country and referrer host, subject to a configured 90-day deletion schedule.
         </p>
       </div>
       <div class="dialog-actions">
