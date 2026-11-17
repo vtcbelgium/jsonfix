@@ -124,8 +124,11 @@ describe("FAQ", () => {
 
   it("highlights that processing is private and in the browser", () => {
     const privacyItem = faqSection().match(/remote server\?<\/h3>\s*<p>([\s\S]*?)<\/p>/)?.[1] ?? "";
-    expect(privacyItem).toContain("<strong>100% private</strong>");
+    expect(privacyItem).toContain("<strong>privacy-focused</strong>");
     expect(plainText(privacyItem)).toContain("in your browser");
+    expect(plainText(privacyItem)).toContain("pseudonymous page views");
+    expect(plainText(privacyItem)).toContain("no raw IP or user-agent stored in the visits database");
+    expect(plainText(privacyItem)).not.toContain("100% private");
   });
 
   it("names every repaired syntax error", () => {
