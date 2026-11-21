@@ -1,0 +1,7 @@
+Name: JSONFix
+URL: https://jsonfix.othrys.be/
+Description: JSONFix is a client-side JSON repair and transformation tool that fixes malformed JSON data without any server-side processing.
+LLMs-Txt: https://jsonfix.othrys.be/llms.txt
+Sitemap: https://jsonfix.othrys.be/sitemap.xml
+Protocol: public-read-only
+Privacy: zero-tracking-cookies, local-browser-execution, zero-cloud-uploads
