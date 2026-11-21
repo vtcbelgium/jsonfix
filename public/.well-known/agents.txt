@@ -1,0 +1,7 @@
+Name: JSONFix
+URL: https://jsonfix.othrys.be/
+Description: Fix malformed JSON instantly in your browser: repairs trailing commas, single quotes, unquoted keys, and Python literals with 100% client-side execution.
+LLMs-Txt: https://jsonfix.othrys.be/llms.txt
+Sitemap: https://jsonfix.othrys.be/sitemap.xml
+Protocol: public-read-only
+Privacy: zero-tracking-cookies, local-browser-execution, zero-cloud-uploads
